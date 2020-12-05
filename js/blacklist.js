@@ -1,49 +1,36 @@
-var blacklist = [
-    "Northernlion",
-    "Frisson",
-    "Unlike Pluto",
-    "Apashe",
-    "xQcOW",
-    "OfflineTV",
-    "Linus Tech Tips",
-    "jackfrags",
-    "PewDiePie",
-    "Kitchen Nightmares",
-    "Disguised Toast",
-    "jacksepticeye",
-    "xKito Music",
-    "Sound Cloudx",
-    "Gordon Ramsay",
-    "First We Feast",
-    "Welyn",
-    "CloudKid",
-    "Everything Pokelawls",
-    "JxmyHighroller",
-    "SahaKit",
-    "Ghrey",
-    "ABC News In-depth",
-    "kliksphilip"
-]
+function main() {
+    var blacklist = [];
 
-var videos = document.getElementsByClassName("style-scope ytd-compact-video-renderer");
-if (videos === null || videos.length === 0) {
-    console.log("Using rich-grid");
-    videos = document.getElementById("contents").childNodes;
+    function removeVideos() {
+        var videos = document.getElementsByClassName("style-scope ytd-compact-video-renderer");
+        if (videos === null || videos.length === 0) {
+            console.log("Using rich-grid");
+            videos = document.getElementById("contents").childNodes;
+        }
+        
+        for (let element of videos) {
+            var thumbnail = element.querySelector("#thumbnail");
+            if (thumbnail === null) {
+                continue;
+            }
+        
+            var videoWatchId = thumbnail.getAttribute("href").split("/watch?v=")[1]
+            var videoInfo = element.querySelector("#text");
+            
+            var channelName = videoInfo.textContent;
+        
+            if (blacklist.indexOf(channelName) >= 0) {
+                console.log("blacklisted channel found '" + channelName + "', video id: " + videoWatchId)
+                element.remove();
+            }
+        };
+    }
+
+    chrome.storage.local.get("blacklist", function(result) {
+        blacklist = result.blacklist;
+        // Wait for blacklist to load before running main
+        removeVideos();
+    });
 }
 
-for (let element of videos) {
-    var thumbnail = element.querySelector("#thumbnail");
-    if (thumbnail === null) {
-        continue;
-    }
-
-    var videoWatchId = thumbnail.getAttribute("href").split("/watch?v=")[1]
-    var videoInfo = element.querySelector("#text");
-    
-    var channelName = videoInfo.textContent;
-
-    if (blacklist.indexOf(channelName) >= 0) {
-        console.log("blacklisted channel found '" + channelName + "', video id: " + videoWatchId)
-        element.remove();
-    }
-};
+main();
