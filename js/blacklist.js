@@ -1,11 +1,20 @@
-function main() {
+(function () {
     var blacklist = [];
+    var videos = null;
+    var currentUrl = window.location.toString();
+    var targetElement = null;
+
+    if (currentUrl.includes("/watch?v=")) {
+        videos = document.getElementsByClassName("style-scope ytd-compact-video-renderer");
+        targetElement = document.getElementById("related");
+    } else {
+        targetElement = document.getElementById("contents");
+        videos = targetElement.children;
+    }
 
     function removeVideos() {
-        var videos = document.getElementsByClassName("style-scope ytd-compact-video-renderer");
-        if (videos === null || videos.length === 0) {
-            console.log("Using rich-grid");
-            videos = document.getElementById("contents").childNodes;
+        if (videos === null) {
+            console.log("Failed to find videos");
         }
         
         for (let element of videos) {
@@ -16,7 +25,9 @@ function main() {
         
             var videoWatchId = thumbnail.getAttribute("href").split("/watch?v=")[1]
             var videoInfo = element.querySelector("#text");
-            
+            if (videoInfo === null) {
+                continue;
+            }
             var channelName = videoInfo.textContent;
         
             if (blacklist.indexOf(channelName) >= 0) {
@@ -26,11 +37,21 @@ function main() {
         };
     }
 
-    chrome.storage.local.get("blacklist", function(result) {
-        blacklist = result.blacklist;
-        // Wait for blacklist to load before running main
-        removeVideos();
-    });
-}
+    function loadBlacklist() {
+        chrome.storage.local.get("blacklist", function(result) {
+            blacklist = result.blacklist;
+            // Wait for blacklist to load before running main
+            removeVideos();
+        });
+    }
 
-main();
+    loadBlacklist();
+
+    const observerConfig = {
+        attributes: true,
+        childList: true,
+        subtree: true
+    };
+    const observer = new MutationObserver(removeVideos);
+    observer.observe(targetElement, observerConfig);
+} ());
