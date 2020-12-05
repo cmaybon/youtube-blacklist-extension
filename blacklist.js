@@ -1,6 +1,10 @@
 var blacklist = [
-    "Northernlion"
+    "Northernlion",
+    "Frisson",
+    "Unlike Pluto",
+    "Apashe"
 ]
+
 var videos = document.getElementsByClassName("style-scope ytd-compact-video-renderer");
 for (let element of videos) {
     var thumbnail = element.querySelector("#thumbnail");
@@ -19,5 +23,6 @@ for (let element of videos) {
 
     if (blacklist.indexOf(channelName) >= 0) {
         console.log("blacklisted channel found '" + channelName + "', video id: " + videoWatchId)
+        element.remove();
     }
 };
