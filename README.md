@@ -7,8 +7,9 @@ _Note: Currently only works with Google Chrome._
 
 1. Download the latest release and extract
 2. Open a new tab and go to `chrome://extensions`
-3. Click 'Load unpacked' in the top left
-4. Select the directory of the extracted files (containing manifest.json)
+3. Activate developer mode in the top right
+4. Click 'Load unpacked' in the top left
+5. Select the directory of the extracted files (containing manifest.json)
 
 **How to blacklist channels**
 
