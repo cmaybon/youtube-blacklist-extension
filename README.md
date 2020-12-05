@@ -5,10 +5,10 @@ _Note: Currently only works with Google Chrome._
 
 **How to Install**
 
-1. Download the repo
+1. Download the latest release and extract
 2. Open a new tab and go to `chrome://extensions`
 3. Click 'Load unpacked' in the top left
-4. Select this repo's directory
+4. Select the directory of the extracted files (containing manifest.json)
 
 **How to blacklist channels**
 
