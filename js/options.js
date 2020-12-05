@@ -1,11 +1,21 @@
 var blacklistTextArea = document.getElementById("blacklist-json");
 
 function loadOptions() {
-    chrome.storage.local.get({
-        "blacklist": function(result) {
-            blacklistTextArea.value = JSON.stringify(result);
-        }
-    });
+    var blacklist = [];
+    try {
+        chrome.storage.local.get(
+            "blacklist", function(result) {
+                blacklist = result.blacklist;
+                console.log(blacklist)
+                blacklistTextArea.value = JSON.stringify(blacklist);
+            }
+        );
+    }
+    catch(e) {
+        console.warn("Failed to get blacklist from chrome storage, creating");
+        console.debug(e);
+        blacklistTextArea.value = [];
+    }
 }
 
 function saveOptions() {
@@ -14,10 +24,15 @@ function saveOptions() {
         var parsed = JSON.parse(blacklistRaw);
         chrome.storage.local.set({
             "blacklist": parsed
+        }, function () {
+            console.log("blacklist value set: " + parsed)
         });
-        console.log("blacklist saved");
     } 
     catch(e) {
         console.log(e);
+        alert("Invalid json");
     }
 }
+
+loadOptions();
+document.getElementById("save-options").addEventListener("click", saveOptions, true);
