@@ -21,7 +21,8 @@ var blacklist = [
     "JxmyHighroller",
     "SahaKit",
     "Ghrey",
-    "ABC News In-depth"
+    "ABC News In-depth",
+    "kliksphilip"
 ]
 
 var videos = document.getElementsByClassName("style-scope ytd-compact-video-renderer");

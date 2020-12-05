@@ -4,12 +4,17 @@
     "description": "Blacklist channels from appearing",
     "version": "0.1",
     "permissions": [
-        "activeTab"
+        "activeTab",
+        "storage"
     ],
     "content_scripts": [
         {
             "matches": ["https://www.youtube.com/*"],
-            "js": ["blacklist.js"]
+            "js": ["js/blacklist.js"]
         }
-    ]
+    ],
+    "options_ui": {
+        "page": "html/options.html",
+        "open_in_tab": true
+    }
 }
