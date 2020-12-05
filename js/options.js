@@ -7,7 +7,7 @@ function loadOptions() {
             "blacklist", function(result) {
                 blacklist = result.blacklist;
                 console.log(blacklist)
-                blacklistTextArea.value = JSON.stringify(blacklist);
+                blacklistTextArea.value = JSON.stringify(blacklist, undefined, 4);
             }
         );
     }

@@ -7,10 +7,21 @@
         "activeTab",
         "storage"
     ],
+    "background": {
+        "scripts": [
+            "js/background.js"
+        ],
+        "persistent": false
+    },
+    "browser_action": {},
     "content_scripts": [
         {
-            "matches": ["https://www.youtube.com/*"],
-            "js": ["js/blacklist.js"]
+            "matches": [
+                "https://www.youtube.com/*"
+            ],
+            "js": [
+                "js/blacklist.js"
+            ]
         }
     ],
     "options_ui": {
