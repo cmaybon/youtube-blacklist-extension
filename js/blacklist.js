@@ -34,7 +34,21 @@
                 console.log("blacklisted channel found '" + channelName + "', video id: " + videoWatchId)
                 element.remove();
             }
+
+            insertAddToBlacklistButton(thumbnail);
         };
+    }
+
+    function insertAddToBlacklistButton(thumbnailElement) {
+        var button = document.createElement("template");
+        button.innerHTML = 
+        `<div style="opacity:1">
+            <svg viewbox="0 0 24 24" height="16" width="16">
+                <polygon points="24 2.1 21.9 0 12 9.9 2.1 0 0 2.1 9.9 12 0 21.9 2.1 24 12 14.1 21.9 24 24 21.9 14.1 12"></polygon>
+            </svg>
+            <div>Block</div>
+        </div>`
+        thumbnailElement.appendChild(button.content.firstChild); 
     }
 
     function loadBlacklist() {

@@ -1,0 +1,17 @@
+.blacklist-tooltip {
+    opacity: 0;
+}
+
+.blacklist-tooltip:hover {
+    opacity: 1;
+    color: #666666;
+}
+
+.blacklist-add {
+    opacity: 0;
+}
+
+.blacklist-add:hover {
+    opacity: 1;
+    color: #666666; 
+}
