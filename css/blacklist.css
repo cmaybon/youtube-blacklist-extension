@@ -7,11 +7,15 @@
     color: #666666;
 }
 
-.blacklist-add {
+.blacklist-add-button {
     opacity: 1;
-}
-
-.blacklist-add:hover {
-    opacity: 1;
-    color: #666666; 
+    color: #ff0000;
+    position: absolute;
+    left: 0px;
+    top: 50%;
+    z-index: 1;
+    margin: 20;
+    padding: 10px 10px 10px 10px;
+    background-color: #000000;
+    cursor: grab;
 }

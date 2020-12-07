@@ -18,29 +18,21 @@
         }
         
         for (let element of videos) {
+            var videoRemoved = addVideoToBlacklist(element);
+            if (videoRemoved) {
+                continue;
+            }
+
+            // TODO cleanup getting thumbnail here and in addVideoToBlacklist()
             var thumbnail = element.querySelector("#thumbnail");
             if (thumbnail === null) {
                 continue;
             }
-        
-            var videoWatchId = thumbnail.getAttribute("href").split("/watch?v=")[1]
-            var videoInfo = element.querySelector("#text");
-            if (videoInfo === null) {
-                continue;
-            }
-            var channelName = videoInfo.textContent;
-        
-            if (blacklist.indexOf(channelName) >= 0) {
-                console.log("blacklisted channel found '" + channelName + "', video id: " + videoWatchId)
-                element.remove();
-            }
 
-            var existingButtons = thumbnail.getElementsByClassName("blacklist-add");
+            var existingButtons = element.getElementsByClassName("blacklist-add-button");
             if (existingButtons.length > 0) {
-                console.log("video already has a blacklist add button, skipping");
                 continue;
             }
-            console.log("adding button...");
             insertAddToBlacklistButton(thumbnail);
         };
     }
@@ -48,10 +40,34 @@
     function insertAddToBlacklistButton(thumbnailElement) {
         var button = document.createElement("template");
         button.innerHTML = 
-        `<div class="blacklist-add" background-color="red" width="20px" >
-        </div>`
-        thumbnailElement.appendChild(button.content.firstChild);
-        console.log("button added");
+        `<div class="blacklist-add-button" width="20px" height="20px">+Blacklist</div>`
+        // button.onclick = addVideoToBlacklist(thumbnailElement);
+        button.onmouseup = function () {
+            alert("reached");
+        };
+        thumbnailElement.parentElement.appendChild(button.content.firstChild);
+        console.log("Add to blacklist Button added");
+    }
+
+    function addVideoToBlacklist(videoElement) {
+        var thumbnail = videoElement.querySelector("#thumbnail");
+        if (thumbnail === null) {
+            return false;
+        }
+
+        var videoWatchId = thumbnail.getAttribute("href").split("/watch?v=")[1]
+        var videoInfo = videoElement.querySelector("#text");
+        if (videoInfo === null) {
+            return false;
+        }
+        var channelName = videoInfo.textContent;
+    
+        if (blacklist.indexOf(channelName) >= 0) {
+            console.log(`Blacklisted channel found "${channelName}", video id "${videoWatchId}", removing video element`)
+            videoElement.remove();
+            return true;
+        }
+        return false;
     }
 
     function loadBlacklist() {

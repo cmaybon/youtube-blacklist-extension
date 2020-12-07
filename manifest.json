@@ -21,6 +21,9 @@
             ],
             "js": [
                 "js/blacklist.js"
+            ],
+            "css": [
+                "css/blacklist.css"
             ]
         }
     ],
