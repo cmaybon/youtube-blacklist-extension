@@ -13,7 +13,4 @@ _Note: Currently only works with Google Chrome._
 
 **How to blacklist channels**
 
-1. Top right of click the puzzle piece icon
-2. Click 'youtube-blacklist'
-3. Enter the channel name into the JSON list
-4. Click save
+1. Clikc the `+Blacklist` button ontop of a video's thumbnail
