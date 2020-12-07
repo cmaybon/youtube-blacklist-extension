@@ -12,20 +12,28 @@
         videos = targetElement.children;
     }
 
+    function loadBlacklist() {
+        chrome.storage.local.get("blacklist", function(result) {
+            blacklist = result.blacklist;
+            // Wait for blacklist to load before running main
+            removeVideos();
+        });
+    }
+
     function removeVideos() {
         if (videos === null) {
             console.log("Failed to find videos");
         }
         
         for (let element of videos) {
-            var videoRemoved = addVideoToBlacklist(element);
-            if (videoRemoved) {
+            var thumbnail = element.querySelector("#thumbnail");
+            if (thumbnail === null) {
                 continue;
             }
 
             // TODO cleanup getting thumbnail here and in addVideoToBlacklist()
-            var thumbnail = element.querySelector("#thumbnail");
-            if (thumbnail === null) {
+            var videoRemoved = removeVideo(element);
+            if (videoRemoved) {
                 continue;
             }
 
@@ -33,28 +41,12 @@
             if (existingButtons.length > 0) {
                 continue;
             }
-            insertAddToBlacklistButton(thumbnail);
+            insertAddToBlacklistButton(thumbnail, element);
         };
     }
 
-    function insertAddToBlacklistButton(thumbnailElement) {
-        var button = document.createElement("template");
-        button.innerHTML = 
-        `<div class="blacklist-add-button" width="20px" height="20px">+Blacklist</div>`
-        // button.onclick = addVideoToBlacklist(thumbnailElement);
-        button.onmouseup = function () {
-            alert("reached");
-        };
-        thumbnailElement.parentElement.appendChild(button.content.firstChild);
-        console.log("Add to blacklist Button added");
-    }
-
-    function addVideoToBlacklist(videoElement) {
+    function removeVideo(videoElement) {
         var thumbnail = videoElement.querySelector("#thumbnail");
-        if (thumbnail === null) {
-            return false;
-        }
-
         var videoWatchId = thumbnail.getAttribute("href").split("/watch?v=")[1]
         var videoInfo = videoElement.querySelector("#text");
         if (videoInfo === null) {
@@ -70,11 +62,32 @@
         return false;
     }
 
-    function loadBlacklist() {
-        chrome.storage.local.get("blacklist", function(result) {
-            blacklist = result.blacklist;
-            // Wait for blacklist to load before running main
+    function insertAddToBlacklistButton(thumbnail, element) {
+        var button = document.createElement("div");
+        button.className = "blacklist-add-button";
+        button.textContent = "+Blacklist";
+        button.addEventListener("click", function () {
+            var videoInfo = this.parentElement.parentElement.querySelector("#text");
+            if (videoInfo === null) {
+                console.error("Failed to find channel name element when adding to blacklist");
+                return;
+            }
+
+            var channelName = videoInfo.textContent;
+            blacklist.push(channelName);
+            console.log(`"${channelName}" added to blacklist`);
+            saveBlacklist();
+
             removeVideos();
+        });
+        thumbnail.parentElement.appendChild(button);
+    }
+
+    function saveBlacklist() {
+        chrome.storage.local.set({
+            "blacklist": blacklist
+        }, function () {
+            console.debug("Blacklist saved");
         });
     }
 

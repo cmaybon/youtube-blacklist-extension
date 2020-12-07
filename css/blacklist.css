@@ -1,12 +1,3 @@
-.blacklist-tooltip {
-    opacity: 0;
-}
-
-.blacklist-tooltip:hover {
-    opacity: 1;
-    color: #666666;
-}
-
 .blacklist-add-button {
     opacity: 1;
     color: #ff0000;
@@ -18,4 +9,5 @@
     padding: 10px 10px 10px 10px;
     background-color: #000000;
     cursor: grab;
+    height: 20px;
 }
