@@ -1,0 +1,13 @@
+.blacklist-add-button {
+    opacity: 1;
+    color: #ff0000;
+    position: absolute;
+    left: 0px;
+    top: 50%;
+    z-index: 1;
+    margin: 20;
+    padding: 10px 10px 10px 10px;
+    background-color: #000000;
+    cursor: pointer;
+    height: 20px;
+}
